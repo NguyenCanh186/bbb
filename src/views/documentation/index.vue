@@ -1,7 +1,5 @@
 <template>
-  <div class="app-container documentation-container">
-    sdad
-  </div>
+  <div class="app-container documentation-container" />
 </template>
 
 <script>

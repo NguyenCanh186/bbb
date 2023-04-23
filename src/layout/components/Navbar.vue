@@ -1,7 +1,7 @@
 <template>
   <div>
     <nav
-      class="navbar navbar-expand-lg navbar-dark bg-info fixed-top p-st"
+      class="navbar navbar-expand-lg navbar-dark bg-info fixed-top1 p-st"
     >
       <div class="container">
         <a
@@ -11,6 +11,16 @@
         >
           <span><img style="width: 40px" :src="image" alt=""></span>
         </a>
+        <div id="navbarSupportedContent2" class="search-bar">
+          <ul class="navbar-nav ml-auto">
+            <div class="dropdown">
+              <div class="topnav">
+                <input class="inputSearch" type="text">
+                <button class="buttonSearch" type="submit"><i class="fa fa-search" aria-hidden="true" /></button>
+              </div>
+            </div>
+          </ul>
+        </div>
         <button
           class="navbar-toggler"
           type="button"
@@ -90,7 +100,33 @@
                 @click.prevent="$emit('scroll', 'portfolio')"
               >
                 <div class="dropdown">
-                  <a href="#" style="text-decoration: none; color: #358827 !important;">ĐĂNG NHẬP</a>
+                  <a href="#" style="text-decoration: none; color: #358827 !important;">XEM NHIỀU NHẤT</a>
+                </div>
+              </a>
+            </li>
+          </ul>
+        </div>
+        <div id="navbarSupportedContent2" class="search-bar2">
+          <ul class="navbar-nav ml-auto">
+            <div class="dropdown">
+              <div class="topnav">
+                <input class="inputSearch" type="text">
+                <button class="buttonSearch" type="submit"><i class="fa fa-search" aria-hidden="true" /></button>
+              </div>
+            </div>
+          </ul>
+        </div>
+        <div id="navbarSupportedContent" style="margin-right: -80px" class="collapse navbar-collapse">
+          <ul class="navbar-nav ml-auto">
+            <li class="nav-item mx-2">
+              <a
+                class="nav-link"
+                href="#"
+                :class="{ 'text-light': nightMode }"
+                @click.prevent="$emit('scroll', 'portfolio')"
+              >
+                <div class="dropdown">
+                  <a type="button" style="text-decoration: none; color: #358827 !important;" @click="showLogin = !showLogin; ">ĐĂNG NHẬP</a>
                 </div>
               </a>
             </li>
@@ -102,7 +138,8 @@
                 @click.prevent="$emit('scroll', 'portfolio')"
               >
                 <div class="dropdown">
-                  <a v-b-modal.modal-center href="#" style="text-decoration: none; color: #358827 !important;">ĐĂNG KÝ</a>
+                  <a type="button" style="text-decoration: none; color: #358827 !important;" @click="show = !show">ĐĂNG KÝ</a>
+                  <!--                  <a v-b-modal.modal-center href="#" style="text-decoration: none; color: #358827 !important;">ĐĂNG KÝ</a>-->
                 </div>
               </a>
             </li>
@@ -111,13 +148,30 @@
         </div>
       </div>
     </nav>
+    <div>
+      <register-account :active.sync="show">
+        <h1>Test</h1>
+        <button type="button" @click="show = !show">Close</button>
+      </register-account>
+      <Login :active.sync="showLogin">
+        <h1>Test</h1>
+        <button type="button" @click="showLogin = !showLogin">Close</button>
+      </Login>
+    </div>
   </div>
 </template>
 
 <script>
+import { max } from '@popperjs/core/lib/utils/math'
+import { style } from 'svgo/lib/svgo/jsAPI'
+import registerAccount from '@/components/PopUp/SignUp/registerAccount.vue'
+import Login from '@/components/PopUp/SignUp/Login.vue'
+
 export default {
   name: 'Navbar',
   components: {
+    registerAccount,
+    Login
   },
   props: {
     nightMode: {
@@ -126,10 +180,16 @@ export default {
   },
   data() {
     return {
-      image: require('/src/assets/logo/logo.jpg')
+      image: require('/src/assets/logo/logo.jpg'),
+      show: false,
+      showLogin: false
     }
   },
   methods: {
+    style() {
+      return style
+    },
+    max
   }
 }
 </script>
@@ -241,6 +301,23 @@ nav {
   color: #17a2b8 !important
 }
 
+.inputSearch {
+  /*border: 1px;*/
+  border-color: #358827 !important;
+  border-radius: 25px 0 0 25px !important;
+}
+
+.buttonSearch {
+  color: white;
+  display: inline;
+  height: 30px;
+  background-color: #358827 !important;
+  border-radius: 0 25px 25px 0 !important;
+}
+
+.inputSearch, .buttonSearch {
+  margin-top: -10px;
+}
 .logo-title-name {
   color: #358827;
   font-size: 35px;
@@ -249,11 +326,61 @@ nav {
   transition: 0.5s all;
 }
 
+@media (max-width: 1399px) {
+  .inputSearch {
+    width: 120px;
+  }
+}
+
+@media (max-width: 1199px) {
+  .topnav {
+    display: flex;
+    align-items: center;
+  }
+
+  .inputSearch {
+    width: 30px;
+  }
+
+  .buttonSearch {
+    display: block;
+  }
+}
+
+@media (max-width: 991px) {
+  .search-bar {
+    display: block; /* hiển thị phần tử */
+  }
+}
+
+@media (min-width: 992px) {
+  .search-bar {
+    display: none; /* ẩn phần tử */
+  }
+}
+
+@media (max-width: 991px) {
+  .search-bar2 {
+    display: none; /* hiển thị phần tử */
+  }
+}
+
+@media (min-width: 992px) {
+  .search-bar2 {
+    display: block; /* ẩn phần tử */
+  }
+}
+
 @media(max-width: 991px){
   .dropdown-content {
     /*display: none;*/
     min-width: 100%;
     position: relative;
+  }
+
+  .inputSearch {
+    width: 140px;
+    height: 30px;
   }
 
   .dropdown-options {
@@ -266,164 +393,12 @@ nav {
     align-items: unset;
   }
 }
-
-
-
-{
-  border: 0;
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
-:root {
-  font-size: calc(16px + (24 - 16)*(100vw - 320px)/(1920 - 320));
-}
-body, button, input {
-  font: 1em Hind, sans-serif;
-  line-height: 1.5em;
-}
-body, input {
-  color: #171717;
-}
-body, .search-bar {
-  display: flex;
-}
-body {
-  background: #f1f1f1;
-  height: 100vh;
-}
-.search-bar input,
-.search-btn,
-.search-btn:before,
-.search-btn:after {
-  transition: all 0.25s ease-out;
-}
-.search-bar input,
-.search-btn {
-  width: 3em;
-  height: 3em;
-}
-.search-bar input:invalid:not(:focus),
-.search-btn {
-  cursor: pointer;
-}
-.search-bar,
-.search-bar input:focus,
-.search-bar input:valid  {
-  width: 100%;
-}
-.search-bar input:focus,
-.search-bar input:not(:focus) + .search-btn:focus {
-  outline: transparent;
-}
-.search-bar {
-  margin: auto;
-  padding: 1.5em;
-  justify-content: center;
-  max-width: 30em;
-}
-.search-bar input {
-  background: transparent;
-  border-radius: 1.5em;
-  box-shadow: 0 0 0 0.4em #171717 inset;
-  padding: 0.75em;
-  transform: translate(0.5em,0.5em) scale(0.5);
-  transform-origin: 100% 0;
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  appearance: none;
-}
-.search-bar input::-webkit-search-decoration {
-  -webkit-appearance: none;
-}
-.search-bar input:focus,
-.search-bar input:valid {
-  background: #fff;
-  border-radius: 0.375em 0 0 0.375em;
-  box-shadow: 0 0 0 0.1em #d9d9d9 inset;
-  transform: scale(1);
-}
-.search-btn {
-  background: #171717;
-  border-radius: 0 0.75em 0.75em 0 / 0 1.5em 1.5em 0;
-  padding: 0.75em;
-  position: relative;
-  transform: translate(0.25em,0.25em) rotate(45deg) scale(0.25,0.125);
-  transform-origin: 0 50%;
-}
-.search-btn:before,
-.search-btn:after {
-  content: "";
-  display: block;
-  opacity: 0;
-  position: absolute;
-}
-.search-btn:before {
-  border-radius: 50%;
-  box-shadow: 0 0 0 0.2em #f1f1f1 inset;
-  top: 0.75em;
-  left: 0.75em;
-  width: 1.2em;
-  height: 1.2em;
-}
-.search-btn:after {
-  background: #f1f1f1;
-  border-radius: 0 0.25em 0.25em 0;
-  top: 51%;
-  left: 51%;
-  width: 0.75em;
-  height: 0.25em;
-  transform: translate(0.2em,0) rotate(45deg);
-  transform-origin: 0 50%;
-}
-.search-btn span {
-  display: inline-block;
-  overflow: hidden;
-  width: 1px;
-  height: 1px;
-}
-
-/* Active state */
-.search-bar input:focus + .search-btn,
-.search-bar input:valid + .search-btn {
-  background: #2762f3;
-  border-radius: 0 0.375em 0.375em 0;
-  transform: scale(1);
-}
-.search-bar input:focus + .search-btn:before,
-.search-bar input:focus + .search-btn:after,
-.search-bar input:valid + .search-btn:before,
-.search-bar input:valid + .search-btn:after {
-  opacity: 1;
-}
-.search-bar input:focus + .search-btn:hover,
-.search-bar input:valid + .search-btn:hover,
-.search-bar input:valid:not(:focus) + .search-btn:focus {
-  background: #0c48db;
-}
-.search-bar input:focus + .search-btn:active,
-.search-bar input:valid + .search-btn:active {
-  transform: translateY(1px);
-}
-
-@media screen and (prefers-color-scheme: dark) {
-  body, input {
-    color: #f1f1f1;
-  }
-  body {
-    background: #171717;
-  }
-  .search-bar input {
-    box-shadow: 0 0 0 0.4em #f1f1f1 inset;
-  }
-  .search-bar input:focus,
-  .search-bar input:valid {
-    background: #3d3d3d;
-    box-shadow: 0 0 0 0.1em #3d3d3d inset;
-  }
-  .search-btn {
-    background: #f1f1f1;
-  }
+.fixed-top1 {
+  position: fixed;
+  top: 0;
+  right: 0;
+  left: 0;
+   /*z-index: 1030;*/
 }
 
 </style>
